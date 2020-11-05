@@ -49,7 +49,7 @@ function checkGame() {
           }
         })
     } else {
-      console.log("Found nothing new")
+      console.log("Found: " + codes.length + " and has: " + lastLength)
     }
   })
 }
