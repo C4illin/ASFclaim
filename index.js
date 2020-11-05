@@ -48,6 +48,8 @@ function checkGame() {
             console.log("Error: " + body)
           }
         })
+    } else {
+      console.log("Found nothing new")
     }
   })
 }
