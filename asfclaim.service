@@ -1,0 +1,15 @@
+[Unit]
+Description=ASFclaim
+
+[Service]
+ExecStart=/usr/bin/node /home/pi/ASFclaim/index.js
+Restart=always
+RestartSec=10
+#User=nobody
+#Group=nobody
+#Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production PORT=5000
+WorkingDirectory=/home/pi/ASFclaim
+
+[Install]
+WantedBy=multi-user.target
