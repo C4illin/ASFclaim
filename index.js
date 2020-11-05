@@ -1,8 +1,19 @@
 const fetch = require("node-fetch")
+const fs = require("fs")
 const { Octokit } = require("@octokit/rest")
 const octokit = new Octokit()
 
-let lastLength = 0
+let lastLength
+fs.readFile("lastlength", function read(err, data) {
+  if(!err && data) {
+    lastLength = data
+  } else if(err.code == "ENOENT") {
+    fs.writeFileSync("lastlength", "0")
+  } else {
+    console.log("Error with lastlength: ", err.code)
+  }
+})
+
 checkGame()
 setInterval(checkGame, 6 * 60 * 60 * 1000) //Runs every six hours
   
@@ -32,6 +43,9 @@ function checkGame() {
         .then(body => {
           if (body.Success){
             console.log("Success: " + asfcommand)
+            fs.writeFileSync("lastlength", lastLength.toString())
+          } else {
+            console.log("Error: " + body)
           }
         })
     }
