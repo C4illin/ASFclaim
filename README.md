@@ -1,5 +1,4 @@
 # ASFclaim
-Experimental.
 Claims games posted by https://www.reddit.com/user/ASFinfo
 
 All games claimed: https://gist.github.com/C4illin/e8c5cf365d816f2640242bf01d8d3675
