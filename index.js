@@ -1,14 +1,14 @@
-const fetch = require("node-fetch")
-const fs = require("fs")
-const { Octokit } = require("@octokit/rest")
+import fetch from "node-fetch"
+import { readFile, writeFileSync } from "fs"
+import { Octokit } from "@octokit/rest"
 const octokit = new Octokit()
 
 let lastLength
-fs.readFile("lastlength", function read(err, data) {
+readFile("lastlength", function read(err, data) {
   if(!err && data) {
     lastLength = data
   } else if(err.code == "ENOENT") {
-    fs.writeFileSync("lastlength", "0")
+    writeFileSync("lastlength", "0")
   } else {
     console.log("Error with lastlength: ", err.code)
   }
@@ -43,7 +43,7 @@ function checkGame() {
         .then(body => {
           if (body.Success){
             console.log("Success: " + asfcommand)
-            fs.writeFileSync("lastlength", lastLength.toString())
+            writeFileSync("lastlength", lastLength.toString())
           } else {
             console.log("Error: " + body)
           }
