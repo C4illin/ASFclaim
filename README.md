@@ -9,5 +9,3 @@ All games claimed: https://gist.github.com/C4illin/e8c5cf365d816f2640242bf01d8d3
 3. `git clone https://github.com/C4illin/ASFclaim.git && cd ASFclaim`
 4. `npm install`
 5. `node .`
-
-or use asfclaim.service
