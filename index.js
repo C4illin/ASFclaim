@@ -9,6 +9,7 @@ readFile("lastlength", function read(err, data) {
     lastLength = data
   } else if(err.code == "ENOENT") {
     writeFileSync("lastlength", "0")
+    lastLength = 0
   } else {
     console.log("Error with lastlength: ", err.code)
   }
@@ -43,10 +44,16 @@ function checkGame() {
         .then(body => {
           if (body.Success){
             console.log("Success: " + asfcommand)
+            console.debug(body)
             writeFileSync("lastlength", lastLength.toString())
           } else {
-            console.log("Error: " + body)
+            console.log("Error: ")
+            console.log(body)
           }
+        })
+        .catch(err => {
+          console.log(`error running '${command}':`)
+          console.log(err)
         })
     } else {
       console.log("Found: " + codes.length + " and has: " + lastLength)
