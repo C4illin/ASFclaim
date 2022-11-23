@@ -2,6 +2,12 @@ import fetch from "node-fetch"
 import { readFile, writeFileSync } from "fs"
 import { Octokit } from "@octokit/rest"
 const octokit = new Octokit()
+import * as dotenv from "dotenv"
+dotenv.config()
+
+let asfport = process.env.ASF_PORT || "1242"
+let asfhost = process.env.ASF_HOST || "localhost"
+let password = process.env.ASF_PASSWORD || ""
 
 let lastLength
 readFile("lastlength", function read(err, data) {
@@ -35,7 +41,12 @@ function checkGame() {
       asfcommand = asfcommand.slice(0, -1)
 
       let command = {Command: asfcommand}
-      fetch("http://localhost:1242/Api/Command", {
+      let url = "http://"+asfhost+":"+asfport+"/Api/Command"
+      if (password && password.length > 0) {
+        url += "?password="+password
+      }
+
+      fetch(url, {
         method: "post",
         body: JSON.stringify(command),
         headers: {"Content-Type": "application/json"}

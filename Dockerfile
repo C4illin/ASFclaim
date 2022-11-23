@@ -1,12 +1,11 @@
-FROM node:17-alpine
+FROM node:lts
 
 USER node
 WORKDIR /usr/src/app
 
-COPY package*.json .
-COPY index.js .
+COPY package*.json ./
+RUN npm install
 
-RUN npm ci
+COPY . .
 
 CMD ["node", "index.js"]
-
