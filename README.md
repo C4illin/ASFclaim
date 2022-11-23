@@ -21,6 +21,7 @@ services:
   asfclaim:
     image: ghcr.io/c4illin/asfclaim:master
     container_name: asfclaim
+    restart: unless-stopped
     environment:
       - ASF_PORT=1242
       - ASF_HOST=localhost
