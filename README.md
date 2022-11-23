@@ -19,7 +19,7 @@ All games claimed: https://gist.github.com/C4illin/e8c5cf365d816f2640242bf01d8d3
 
 services:
   asfclaim:
-    image: ghcr.io/c4illin/asfclaim:main
+    image: ghcr.io/c4illin/asfclaim:master
     container_name: asfclaim
     environment:
       - ASF_PORT=1242
