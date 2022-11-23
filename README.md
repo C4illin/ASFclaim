@@ -18,9 +18,9 @@ All games claimed: https://gist.github.com/C4illin/e8c5cf365d816f2640242bf01d8d3
 # docker-compose.yml
 
 services:
-  asf-claim:
-    image: ghcr.io/c4illin/asf-claim:main
-    container_name: asf-claim
+  asfclaim:
+    image: ghcr.io/c4illin/asfclaim:main
+    container_name: asfclaim
     environment:
       - ASF_PORT=1242
       - ASF_HOST=localhost
