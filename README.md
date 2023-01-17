@@ -27,3 +27,10 @@ services:
       - ASF_HOST=localhost
       - ASF_PASSWORD=hunter2
 ```
+
+### Contributors and forks:
+
+https://gitlab.com/docker_repos/asfclaim fork for docker before it was included here
+
+https://github.com/GuFFy12/ASFclaim (archived) fork with discord notifications
+
