@@ -12,6 +12,6 @@
   "dependencies": {
     "@octokit/rest": "^18.0.8",
     "dotenv": "^16.0.3",
-    "node-fetch": "^3.2.10"
+    "node-fetch": "^3.3.0"
   }
 }
