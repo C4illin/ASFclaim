@@ -15,6 +15,10 @@ All games claimed: https://gist.github.com/C4illin/e8c5cf365d816f2640242bf01d8d3
 
 ### Using docker?
 
+```bash
+docker run --name asfclaim -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_PASSWORD=hunter2 ghcr.io/c4illin/asfclaim:master 
+```
+
 ```yml
 # docker-compose.yml
 
