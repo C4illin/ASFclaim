@@ -33,7 +33,7 @@ services:
 
 ### Contributors and forks:
 
-https://gitlab.com/docker_repos/asfclaim fork for docker before it was included here
+https://gitlab.com/docker_repos/asfclaim fork with discord notifications and docker (before it was included here)
 
 https://github.com/GuFFy12/ASFclaim (archived) fork with discord notifications
 
