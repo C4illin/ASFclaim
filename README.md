@@ -20,6 +20,8 @@ docker run --name asfclaim -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_PASSWOR
 ```
 or docker-compose:
 ```yml
+# docker-compose.yml
+
 services:
   asfclaim:
     image: ghcr.io/c4illin/asfclaim:master
