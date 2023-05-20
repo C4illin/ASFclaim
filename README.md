@@ -39,3 +39,5 @@ https://gitlab.com/docker_repos/asfclaim fork with discord notifications and doc
 
 https://github.com/GuFFy12/ASFclaim (archived) fork with discord notifications
 
+[HeroCC](https://github.com/HeroCC)
+
