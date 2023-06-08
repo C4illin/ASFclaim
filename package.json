@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@octokit/rest": "^19.0.11",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.1.4",
     "node-fetch": "^3.3.1"
   }
 }
