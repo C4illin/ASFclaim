@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@octokit/rest": "^19.0.13",
+    "@octokit/rest": "^20.0.1",
     "dotenv": "^16.3.1",
     "node-fetch": "^3.3.1"
   }
