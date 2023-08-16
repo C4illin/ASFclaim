@@ -42,14 +42,15 @@ function checkGame() {
 
       let command = {Command: asfcommand}
       let url = "http://"+asfhost+":"+asfport+"/Api/Command"
+      let headers = {"Content-Type": "application/json"}
       if (password && password.length > 0) {
-        url += "?password="+password
+        headers["Authentication"] = password
       }
 
       fetch(url, {
         method: "post",
         body: JSON.stringify(command),
-        headers: {"Content-Type": "application/json"}
+        headers: headers
       })
         .then(res => res.json())
         .then(body => {
