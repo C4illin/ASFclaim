@@ -73,7 +73,7 @@ jobs:
             # pull request event
             type=ref,enable=true,prefix=pr-,suffix=,event=pr
             # commit sha
-            type=sha,format=short
+            type=sha,prefix=,suffix=,format=short
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
