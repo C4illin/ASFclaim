@@ -30,9 +30,9 @@ function checkGame() {
 
     //THIS IS BAD, and definitely not scalable.
     if (lastLength < codes.length) {
-      if ((lastLength + 10) < codes.length) {
-        console.log("Only runs on the last 10 games")
-        lastLength = codes.length - 10
+      if ((lastLength + 50) < codes.length) {
+        console.log("Only runs on the last 50 games")
+        lastLength = codes.length - 50
       }
       let asfcommand = "!addlicense asf "
       for (lastLength; lastLength < codes.length; lastLength++) {
