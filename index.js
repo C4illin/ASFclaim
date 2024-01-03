@@ -30,6 +30,7 @@ function checkGame() {
 
     //THIS IS BAD, and definitely not scalable.
     if (lastLength < codes.length) {
+      let lastLengthBeforeRun = lastLength
       if ((lastLength + 40) < codes.length) {
         console.log("Only runs on the last 40 games")
         lastLength = codes.length - 40
@@ -64,8 +65,10 @@ function checkGame() {
           }
         })
         .catch(err => {
-          console.log(`error running '${command}':`)
+          console.log(`error running '${command["Command"]}':`)
           console.log(err)
+          console.log("Trying again in six hours")
+          lastLength = lastLengthBeforeRun
         })
     } else {
       console.log("Found: " + codes.length + " and has: " + lastLength)

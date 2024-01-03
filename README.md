@@ -29,10 +29,13 @@ services:
     image: ghcr.io/c4illin/asfclaim:master
     container_name: asfclaim
     restart: unless-stopped
+    depends_on: asf # remove this if asf is not running in docker
     environment:
       - ASF_PORT=1242
       - ASF_HOST=localhost
       - ASF_PASSWORD=hunter2
+  asf:
+    # ...
 ```
 
 ### Contributors and forks:
