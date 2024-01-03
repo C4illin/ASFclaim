@@ -11,9 +11,9 @@ let password = process.env.ASF_PASSWORD || ""
 
 let lastLength
 readFile("lastlength", function read(err, data) {
-  if(!err && data) {
+  if (!err && data) {
     lastLength = data
-  } else if(err.code == "ENOENT") {
+  } else if (err.code == "ENOENT") {
     writeFileSync("lastlength", "0")
     lastLength = 0
   } else {
@@ -23,7 +23,7 @@ readFile("lastlength", function read(err, data) {
 
 checkGame()
 setInterval(checkGame, 6 * 60 * 60 * 1000) //Runs every six hours
-  
+
 function checkGame() {
   octokit.gists.get({ gist_id: "e8c5cf365d816f2640242bf01d8d3675" }).then(gist => {
     let codes = gist.data.files['Steam Codes'].content.split("\n")
@@ -37,13 +37,13 @@ function checkGame() {
       }
       let asfcommand = "!addlicense asf "
       for (lastLength; lastLength < codes.length; lastLength++) {
-        asfcommand += codes[lastLength]+","
+        asfcommand += codes[lastLength] + ","
       }
       asfcommand = asfcommand.slice(0, -1)
 
-      let command = {Command: asfcommand}
-      let url = "http://"+asfhost+":"+asfport+"/Api/Command"
-      let headers = {"Content-Type": "application/json"}
+      let command = { Command: asfcommand }
+      let url = "http://" + asfhost + ":" + asfport + "/Api/Command"
+      let headers = { "Content-Type": "application/json" }
       if (password && password.length > 0) {
         headers["Authentication"] = password
       }
@@ -55,7 +55,7 @@ function checkGame() {
       })
         .then(res => res.json())
         .then(body => {
-          if (body.Success){
+          if (body.Success) {
             console.log("Success: " + asfcommand)
             console.debug(body)
             writeFileSync("lastlength", lastLength.toString())
