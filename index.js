@@ -8,6 +8,7 @@ dotenv.config()
 let asfport = process.env.ASF_PORT || "1242"
 let asfhost = process.env.ASF_HOST || "localhost"
 let password = process.env.ASF_PASSWORD || ""
+let commandprefix = process.env.ASF_COMMAND_PREFIX || "!"
 
 let lastLength
 readFile("lastlength", function read(err, data) {
@@ -35,7 +36,7 @@ function checkGame() {
         console.log("Only runs on the last 40 games")
         lastLength = codes.length - 40
       }
-      let asfcommand = "!addlicense asf "
+      let asfcommand = commandprefix + "addlicense asf "
       for (lastLength; lastLength < codes.length; lastLength++) {
         asfcommand += codes[lastLength] + ","
       }
