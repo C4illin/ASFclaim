@@ -34,6 +34,7 @@ services:
       - ASF_PORT=1242
       - ASF_HOST=localhost
       - ASF_PASSWORD=hunter2
+      - ASF_COMMAND_PREFIX=!
   asf:
     # ...
 ```
