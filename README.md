@@ -18,7 +18,7 @@ Latest games claimed: https://gist.github.com/C4illin/77a4bcb9a9a7a95e5f291badc9
 ### Using docker?
 
 ```bash
-docker run --name asfclaim -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_PASSWORD=hunter2 ghcr.io/c4illin/asfclaim:master 
+docker run --name asfclaim -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_PASSWORD=hunter2 -e ASF_COMMAND_PREFIX=! ghcr.io/c4illin/asfclaim:master 
 ```
 or docker-compose:
 ```yml
@@ -30,10 +30,10 @@ services:
     container_name: asfclaim
     restart: unless-stopped
     depends_on: asf # remove this if asf is not running in docker
-    environment:
+    environment: # all are optional, defaults are listed below
       - ASF_PORT=1242
       - ASF_HOST=localhost
-      - ASF_PASSWORD=hunter2
+      - ASF_PASSWORD=
       - ASF_COMMAND_PREFIX=!
   asf:
     # ...
@@ -49,3 +49,4 @@ https://github.com/specu/ASFclaim.py Python rewrite without any dependencies
 
 [HeroCC](https://github.com/HeroCC)
 
+[Nuckle](https://github.com/nuckle)
