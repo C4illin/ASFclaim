@@ -40,17 +40,19 @@ services:
     # ...
 ```
 
-## Contributors and forks:
+## Contributors
+
+<a href="https://github.com/C4illin/ASFclaim/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=C4illin/ASFclaim" />
+</a>
+
+## Forks
 
 https://gitlab.com/docker_repos/asfclaim fork with discord notifications and docker (before it was included here)
 
 https://github.com/GuFFy12/ASFclaim (archived) fork with discord notifications
 
 https://github.com/specu/ASFclaim.py Python rewrite without any dependencies
-
-[HeroCC](https://github.com/HeroCC)
-
-[Nuckle](https://github.com/nuckle)
                         
 ## Stargazers over time
 [![Stargazers over time](https://starchart.cc/C4illin/ASFclaim.svg?variant=adaptive)](https://starchart.cc/C4illin/ASFclaim)
