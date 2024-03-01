@@ -9,6 +9,8 @@ let asfport = process.env.ASF_PORT || "1242"
 let asfhost = process.env.ASF_HOST || "localhost"
 let password = process.env.ASF_PASSWORD || ""
 let commandprefix = process.env.ASF_COMMAND_PREFIX || "!"
+let asfhttps = (process.env.ASF_HTTPS && process.env.ASF_HTTPS == 'true') ? true : false;
+
 
 let lastLength
 readFile("lastlength", function read(err, data) {
@@ -43,7 +45,7 @@ function checkGame() {
       asfcommand = asfcommand.slice(0, -1)
 
       let command = { Command: asfcommand }
-      let url = "http://" + asfhost + ":" + asfport + "/Api/Command"
+      let url = asfhttps ? 'https' : 'http'; url += "://" + asfhost + ":" + asfport + "/Api/Command"
       let headers = { "Content-Type": "application/json" }
       if (password && password.length > 0) {
         headers["Authentication"] = password
