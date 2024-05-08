@@ -18,7 +18,7 @@ Latest games claimed: https://gist.github.com/C4illin/77a4bcb9a9a7a95e5f291badc9
 ### Docker
 
 ```bash
-docker run --name asfclaim -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_HTTPS=false -e ASF_PASSWORD=hunter2 -e ASF_COMMAND_PREFIX=! ghcr.io/c4illin/asfclaim:master 
+docker run --name asfclaim -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_HTTPS=false -e ASF_PASSWORD=hunter2 -e ASF_COMMAND_PREFIX=! -e ASF_BOTS=asf ghcr.io/c4illin/asfclaim:master 
 ```
 #### Docker-compose:
 ```yml
@@ -36,6 +36,7 @@ services:
       - ASF_PASSWORD=
       - ASF_COMMAND_PREFIX=!
       - ASF_HTTPS=false
+      - ASF_BOTS=asf #https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Commands#bots-argument
   asf:
     # ...
 ```
