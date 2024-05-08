@@ -1,22 +1,23 @@
 import fetch from "node-fetch"
 import { readFile, writeFileSync } from "fs"
 import { Octokit } from "@octokit/rest"
-const octokit = new Octokit()
 import * as dotenv from "dotenv"
+const octokit = new Octokit()
 dotenv.config()
 
-let asfport = process.env.ASF_PORT || "1242"
-let asfhost = process.env.ASF_HOST || "localhost"
-let password = process.env.ASF_PASSWORD || ""
-let commandprefix = process.env.ASF_COMMAND_PREFIX || "!"
-let asfhttps = (process.env.ASF_HTTPS && process.env.ASF_HTTPS == 'true') ? true : false;
+const asfport = process.env.ASF_PORT || "1242";
+const asfhost = process.env.ASF_HOST || "localhost"
+const password = process.env.ASF_PASSWORD || ""
+const commandprefix = process.env.ASF_COMMAND_PREFIX || "!"
+const asfhttps = process.env.ASF_HTTPS && (process.env.ASF_HTTPS === true || process.env.ASF_HTTPS === 'true')
+const asfbots = process.env.ASF_BOTS || "asf"
 
 
 let lastLength
 readFile("lastlength", function read(err, data) {
   if (!err && data) {
     lastLength = data
-  } else if (err.code == "ENOENT") {
+  } else if (err.code === "ENOENT") {
     writeFileSync("lastlength", "0")
     lastLength = 0
   } else {
@@ -29,7 +30,7 @@ setInterval(checkGame, 6 * 60 * 60 * 1000) //Runs every six hours
 
 function checkGame() {
   octokit.gists.get({ gist_id: "e8c5cf365d816f2640242bf01d8d3675" }).then(gist => {
-    let codes = gist.data.files['Steam Codes'].content.split("\n")
+    const codes = gist.data.files['Steam Codes'].content.split("\n");
 
     //THIS IS BAD, and definitely not scalable.
     if (lastLength < codes.length) {
@@ -38,15 +39,15 @@ function checkGame() {
         console.log("Only runs on the last 40 games")
         lastLength = codes.length - 40
       }
-      let asfcommand = commandprefix + "addlicense asf "
+      let asfcommand = `${commandprefix}addlicense ${asfbots} `
       for (lastLength; lastLength < codes.length; lastLength++) {
         asfcommand += codes[lastLength] + ","
       }
       asfcommand = asfcommand.slice(0, -1)
 
-      let command = { Command: asfcommand }
-      let url = asfhttps ? 'https' : 'http'; url += "://" + asfhost + ":" + asfport + "/Api/Command"
-      let headers = { "Content-Type": "application/json" }
+      const command = { Command: asfcommand }
+      const url = `http${asfhttps ? 's' : ''}://${asfhost}:${asfport}/Api/Command`
+      const headers = { "Content-Type": "application/json" }
       if (password && password.length > 0) {
         headers["Authentication"] = password
       }
@@ -58,7 +59,7 @@ function checkGame() {
       })
         .then(res => res.json())
         .then(body => {
-          if (body.Success) {
+          if (body['Success']) {
             console.log("Success: " + asfcommand)
             console.debug(body)
             writeFileSync("lastlength", lastLength.toString())
