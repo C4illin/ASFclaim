@@ -1,5 +1,8 @@
 # ASFclaim
-Claims games posted by https://www.reddit.com/user/ASFinfo
+[![Docker](https://github.com/C4illin/ASFclaim/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/C4illin/ASFclaim/actions/workflows/docker-publish.yml)
+![GitHub repo size](https://img.shields.io/github/repo-size/C4illin/ASFclaim)
+
+Claims games posted by [/u/ASFinfo](https://www.reddit.com/user/ASFinfo) (source code: https://github.com/C4illin/ASFinfo)
 
 All games claimed: https://gist.github.com/C4illin/e8c5cf365d816f2640242bf01d8d3675
 
@@ -36,7 +39,7 @@ services:
       - ASF_PASSWORD=
       - ASF_COMMAND_PREFIX=!
       - ASF_HTTPS=false
-      - ASF_BOTS=asf #https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Commands#bots-argument
+      - ASF_BOTS=asf # see https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Commands#bots-argument
   asf:
     # ...
 ```
