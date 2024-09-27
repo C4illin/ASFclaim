@@ -57,6 +57,8 @@ https://gitlab.com/docker_repos/asfclaim fork with discord notifications and doc
 https://github.com/GuFFy12/ASFclaim (archived) fork with discord notifications
 
 https://github.com/specu/ASFclaim.py Python rewrite without any dependencies
+
+https://github.com/JourneyDocker/ASFclaim fork with different gist and discord notifications
                         
 ## Stargazers over time
 [![Stargazers over time](https://starchart.cc/C4illin/ASFclaim.svg?variant=adaptive)](https://starchart.cc/C4illin/ASFclaim)
