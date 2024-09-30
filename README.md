@@ -10,7 +10,7 @@ Latest games claimed: https://gist.github.com/C4illin/77a4bcb9a9a7a95e5f291badc9
 
 ## Install
 1. enable IPC in ASF (https://github.com/JustArchiNET/ArchiSteamFarm/wiki/IPC) (add password to .env if not empty)
-2. install node.js (v16 or later)
+2. install node.js (v18 or later)
 3. `git clone https://github.com/C4illin/ASFclaim.git`
 4. `cd ASFclaim`
 5. `npm install`
