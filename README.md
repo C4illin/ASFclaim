@@ -9,14 +9,16 @@ All games claimed: https://gist.github.com/C4illin/e8c5cf365d816f2640242bf01d8d3
 Latest games claimed: https://gist.github.com/C4illin/77a4bcb9a9a7a95e5f291badc93ec6cd
 
 ## Install
-1. enable IPC in ASF (https://github.com/JustArchiNET/ArchiSteamFarm/wiki/IPC) (add password to .env if not empty)
+1. enable IPC in ASF (https://github.com/JustArchiNET/ArchiSteamFarm/wiki/IPC), by default it is enabled (also add password to .env if not empty)
 2. install node.js (v18 or later)
 3. `git clone https://github.com/C4illin/ASFclaim.git`
 4. `cd ASFclaim`
 5. `npm install`
-6. `node .`
 
-
+## Run
+1. Make sure ASF is running
+2. `node .`
+The program checks available licenses every 6 hours. 
 
 ### Docker
 
