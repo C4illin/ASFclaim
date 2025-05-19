@@ -1,6 +1,7 @@
 # ASFclaim
 [![Docker](https://github.com/C4illin/ASFclaim/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/C4illin/ASFclaim/actions/workflows/docker-publish.yml)
 ![GitHub repo size](https://img.shields.io/github/repo-size/C4illin/ASFclaim)
+[![ghcr.io Pulls](https://img.shields.io/badge/dynamic/json?logo=github&url=https%3A%2F%2Fipitio.github.io%2Fbackage%2FC4illin%2FASFclaim%2Fasfclaim.json&query=%24.downloads&label=ghcr.io%20pulls&cacheSeconds=14400)](https://github.com/C4illin/ASFclaim/pkgs/container/ASFclaim)
 
 Claims games posted by [/u/ASFinfo](https://www.reddit.com/user/ASFinfo) (source code: https://github.com/C4illin/ASFinfo)
 
