@@ -53,9 +53,8 @@ function checkGame() {
 				asfcommand = asfcommand.slice(0, -1);
 
 				const command = { Command: asfcommand };
-				const url = `http${
-					asfhttps ? "s" : ""
-				}://${asfhost}:${asfport}/Api/Command`;
+				const url = `http${asfhttps ? "s" : ""
+					}://${asfhost}:${asfport}/Api/Command`;
 				const headers = { "Content-Type": "application/json" };
 				if (password && password.length > 0) {
 					headers.Authentication = password;
