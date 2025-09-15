@@ -11,20 +11,30 @@ Latest games claimed: https://gist.github.com/C4illin/77a4bcb9a9a7a95e5f291badc9
 
 ## Install
 1. enable IPC in ASF (https://github.com/JustArchiNET/ArchiSteamFarm/wiki/IPC), by default it is enabled (also add password to .env if not empty)
-2. install node.js (v18 or later)
-3. `git clone https://github.com/C4illin/ASFclaim.git`
-4. `cd ASFclaim`
-5. `npm install`
+2. Create a GitHub Personal Access Token:
+   - Go to https://github.com/settings/tokens
+   - Click "Generate new token" → "Generate new token (classic)"
+   - Give it a name like "ASFclaim"
+   - Select the `gist` scope (required to read gists)
+   - Copy the generated token
+3. install node.js (v18 or later)
+4. `git clone https://github.com/C4illin/ASFclaim.git`
+5. `cd ASFclaim`
+6. `npm install`
+7. Create a `.env` file with your GitHub token:
+   ```
+   GITHUB_TOKEN=your_github_token_here
+   ```
 
 ## Run
 1. Make sure ASF is running
 2. `node .`
-The program checks available licenses every 6 hours. 
+The program checks available licenses every 6 hours.
 
 ### Docker
 
 ```bash
-docker run --name asfclaim -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_HTTPS=false -e ASF_PASSWORD=hunter2 -e ASF_COMMAND_PREFIX=! -e ASF_BOTS=asf ghcr.io/c4illin/asfclaim:master 
+docker run --name asfclaim -e GITHUB_TOKEN=your_github_token_here -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_HTTPS=false -e ASF_PASSWORD=hunter2 -e ASF_COMMAND_PREFIX=! -e ASF_BOTS=asf ghcr.io/c4illin/asfclaim:master
 ```
 #### Docker-compose:
 ```yml
@@ -36,7 +46,9 @@ services:
     container_name: asfclaim
     restart: unless-stopped
     depends_on: asf # remove this if asf is not running in docker
-    environment: # all are optional, defaults are listed below
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN} # required - get from https://github.com/settings/tokens
+      # all below are optional, defaults are listed
       - ASF_PORT=1242
       - ASF_HOST=localhost
       - ASF_PASSWORD=
@@ -64,6 +76,6 @@ https://github.com/specu/ASFclaim.py Python rewrite without any dependencies
 https://github.com/JourneyDocker/ASFclaim fork with different gist and discord notifications
 
 Instead of forking it, please consider sending a PR so we can make the best solution together!
-                        
+
 ## Stargazers over time
 [![Stargazers over time](https://starchart.cc/C4illin/ASFclaim.svg?variant=adaptive)](https://starchart.cc/C4illin/ASFclaim)

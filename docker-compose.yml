@@ -3,7 +3,8 @@ version: "3"
 services:
   asf-claim:
     build: .
-    # environment:
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
       # - ASF_PORT=1242
       # - ASF_HOST=localhost
       # - ASF_PASSWORD=hunter2

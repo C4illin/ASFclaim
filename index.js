@@ -2,8 +2,12 @@ import fetch from "node-fetch";
 import { readFile, writeFileSync } from "node:fs";
 import { Octokit } from "@octokit/rest";
 import * as dotenv from "dotenv";
-const octokit = new Octokit();
 dotenv.config();
+
+const githubToken = process.env.GITHUB_TOKEN;
+const octokit = new Octokit({
+	auth: githubToken,
+});
 
 const asfport = process.env.ASF_PORT || "1242";
 const asfhost = process.env.ASF_HOST || "localhost";
