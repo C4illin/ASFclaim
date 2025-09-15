@@ -8,10 +8,10 @@ const githubToken = process.env.GITHUB_TOKEN;
 const octokit = new Octokit(githubToken ? { auth: githubToken } : {});
 
 if (githubToken) {
-	console.log("✓ GitHub token provided - using authenticated requests (5000/hour rate limit)");
+	console.log("GitHub token provided - using authenticated requests (5000/hour rate limit)");
 } else {
-	console.log("⚠ No GitHub token provided - using unauthenticated requests (60/hour rate limit)");
-	console.log("  Consider setting GITHUB_TOKEN environment variable to avoid rate limits");
+	console.log("No GitHub token provided - using unauthenticated requests (60/hour rate limit)");
+	console.log("Consider setting GITHUB_TOKEN environment variable to avoid rate limits");
 }
 
 const asfport = process.env.ASF_PORT || "1242";
