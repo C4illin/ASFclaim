@@ -5,9 +5,14 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const githubToken = process.env.GITHUB_TOKEN;
-const octokit = new Octokit({
-	auth: githubToken,
-});
+const octokit = new Octokit(githubToken ? { auth: githubToken } : {});
+
+if (githubToken) {
+	console.log("✓ GitHub token provided - using authenticated requests (5000/hour rate limit)");
+} else {
+	console.log("⚠ No GitHub token provided - using unauthenticated requests (60/hour rate limit)");
+	console.log("  Consider setting GITHUB_TOKEN environment variable to avoid rate limits");
+}
 
 const asfport = process.env.ASF_PORT || "1242";
 const asfhost = process.env.ASF_HOST || "localhost";
@@ -53,8 +58,9 @@ function checkGame() {
 				asfcommand = asfcommand.slice(0, -1);
 
 				const command = { Command: asfcommand };
-				const url = `http${asfhttps ? "s" : ""
-					}://${asfhost}:${asfport}/Api/Command`;
+				const url = `http${
+					asfhttps ? "s" : ""
+				}://${asfhost}:${asfport}/Api/Command`;
 				const headers = { "Content-Type": "application/json" };
 				if (password && password.length > 0) {
 					headers.Authentication = password;

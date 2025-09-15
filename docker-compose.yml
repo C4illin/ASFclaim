@@ -4,7 +4,7 @@ services:
   asf-claim:
     build: .
     environment:
-      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      # - GITHUB_TOKEN=${GITHUB_TOKEN}  # optional: prevents rate limiting
       # - ASF_PORT=1242
       # - ASF_HOST=localhost
       # - ASF_PASSWORD=hunter2
