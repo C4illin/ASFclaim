@@ -2,8 +2,17 @@ import fetch from "node-fetch";
 import { readFile, writeFileSync } from "node:fs";
 import { Octokit } from "@octokit/rest";
 import * as dotenv from "dotenv";
-const octokit = new Octokit();
 dotenv.config();
+
+const githubToken = process.env.GITHUB_TOKEN;
+const octokit = new Octokit(githubToken ? { auth: githubToken } : {});
+
+if (githubToken) {
+	console.log("GitHub token provided - using authenticated requests (5000/hour rate limit)");
+} else {
+	console.log("No GitHub token provided - using unauthenticated requests (60/hour rate limit)");
+	console.log("Consider setting GITHUB_TOKEN environment variable to avoid rate limits");
+}
 
 const asfport = process.env.ASF_PORT || "1242";
 const asfhost = process.env.ASF_HOST || "localhost";
