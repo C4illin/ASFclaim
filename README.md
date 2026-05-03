@@ -19,13 +19,22 @@ Latest games claimed: https://gist.github.com/C4illin/77a4bcb9a9a7a95e5f291badc9
 ## Run
 1. Make sure ASF is running
 2. `node .`
-The program checks available licenses every 6 hours. 
+The program checks available licenses every 6 hours.
+
+Progress is stored under `ASFCLAIM_DATA_DIR` (default: current directory): `lastlength` (line index) and, after a successful claim run, `lastgame` (text of the last gist line that was processed). If `lastgame` is missing, only `lastlength` is used, matching the older behavior. Matching uses the line text so reordering the gist does not skip keys as long as the recorded line still appears.
 
 ### Docker
 
+Persist state on the host by setting `ASFCLAIM_DATA_DIR` to a mounted path (for example `/data` in the container).
+
 ```bash
-docker run --name asfclaim -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_HTTPS=false -e ASF_PASSWORD=hunter2 -e ASF_COMMAND_PREFIX=! -e ASF_BOTS=asf ghcr.io/c4illin/asfclaim:master 
+docker run --name asfclaim \
+  -e ASFCLAIM_DATA_DIR=/data \
+  -v asfclaim-state:/data \
+  -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_HTTPS=false -e ASF_PASSWORD=hunter2 -e ASF_COMMAND_PREFIX=! -e ASF_BOTS=asf \
+  ghcr.io/c4illin/asfclaim:master
 ```
+
 #### Docker-compose:
 ```yml
 # docker-compose.yml
@@ -37,14 +46,20 @@ services:
     restart: unless-stopped
     depends_on: asf # remove this if asf is not running in docker
     environment: # all are optional, defaults are listed below
+      - ASFCLAIM_DATA_DIR=/data
       - ASF_PORT=1242
       - ASF_HOST=localhost
       - ASF_PASSWORD=
       - ASF_COMMAND_PREFIX=!
       - ASF_HTTPS=false
       - ASF_BOTS=asf # see https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Commands#bots-argument
+    volumes:
+      - asfclaim-state:/data
   asf:
     # ...
+
+volumes:
+  asfclaim-state:
 ```
 
 ## Contributors

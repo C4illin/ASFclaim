@@ -4,9 +4,14 @@ services:
   asf-claim:
     build: .
     # environment:
+      # - ASFCLAIM_DATA_DIR=/data
       # - ASF_PORT=1242
       # - ASF_HOST=localhost
       # - ASF_PASSWORD=hunter2
       # - ASF_COMMAND_PREFIX=!
       # - ASF_HTTPS=false
       # - ASF_BOTS=asf #https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Commands#bots-argument
+    # volumes:
+      # - asfclaim-state:/data
+# volumes:
+#   asfclaim-state:
