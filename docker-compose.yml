@@ -6,6 +6,7 @@ services:
     # environment:
       # - ASFCLAIM_DATA_DIR=/data
       # - ASFCLAIM_TAIL_KEYS=40
+      # - ASFCLAIM_LICENSES_PER_COMMAND=5
       # - ASF_PORT=1242
       # - ASF_HOST=localhost
       # - ASF_PASSWORD=hunter2

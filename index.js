@@ -29,6 +29,61 @@ const TAIL_KEYS = (() => {
 	return Number.isFinite(n) && n > 0 ? n : 40;
 })();
 
+/** Max license entries per single ASF `addlicense` IPC command (rate limits / easier retries). */
+const LICENSES_PER_CMD = (() => {
+	const n = parseInt(
+		process.env.ASFCLAIM_LICENSES_PER_COMMAND ?? "5",
+		10,
+	);
+	return Number.isFinite(n) && n > 0 ? n : 5;
+})();
+
+/**
+ * True when we should not advance `lastgame` / `lastlength`.
+ * `Fail/AlreadyPurchased` means you already own it — treat as OK per line.
+ */
+function asfResultIndicatesClaimProblems(result) {
+	const raw = stringFromAsfResult(result);
+	if (!raw) {
+		return false;
+	}
+	const lower = raw.toLowerCase();
+	if (lower.includes("not connected")) {
+		return true;
+	}
+
+	for (const line of raw.split(/\r?\n/)) {
+		const l = line.toLowerCase();
+		if (!l.includes("status:")) {
+			continue;
+		}
+		if (l.includes("alreadypurchased")) {
+			continue;
+		}
+		if (l.includes("ratelimit")) {
+			return true;
+		}
+		if (l.includes("fail/") || /\bstatus:\s*fail\b/.test(l)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function stringFromAsfResult(result) {
+	if (result == null) {
+		return "";
+	}
+	if (typeof result === "string") {
+		return result;
+	}
+	try {
+		return JSON.stringify(result);
+	} catch {
+		return String(result);
+	}
+}
+
 /** @type {number} */
 let lastLength = 0;
 /** @type {string | null} */
@@ -141,53 +196,75 @@ async function checkGame() {
 			processFrom = codes.length - TAIL_KEYS;
 		}
 
-		let asfcommand = `${commandprefix}addlicense ${asfbots} `;
-		for (let i = processFrom; i < codes.length; i++) {
-			asfcommand += `${codes[i]},`;
-		}
-		asfcommand = asfcommand.slice(0, -1);
-
-		const command = { Command: asfcommand };
 		const url = `http${asfhttps ? "s" : ""}://${asfhost}:${asfport}/Api/Command`;
 		const headers = { "Content-Type": "application/json" };
 		if (password.length > 0) {
 			headers.Authentication = password;
 		}
 
-		const lastLineClaimed = codes[codes.length - 1];
+		const runStart = processFrom;
+		let nextIndex = runStart;
 
-		const asfRes = await fetch(url, {
-			method: "POST",
-			body: JSON.stringify(command),
-			headers,
-		});
+		while (nextIndex < codes.length) {
+			const end = Math.min(nextIndex + LICENSES_PER_CMD, codes.length);
+			let part = `${commandprefix}addlicense ${asfbots} `;
+			for (let i = nextIndex; i < end; i++) {
+				part += `${codes[i]},`;
+			}
+			part = part.slice(0, -1);
 
-		let body;
-		try {
-			body = await asfRes.json();
-		} catch {
-			console.log("ASF IPC response was not JSON");
-			lastLength = lastLengthBeforeRun;
-			return;
-		}
+			const asfRes = await fetch(url, {
+				method: "POST",
+				body: JSON.stringify({ Command: part }),
+				headers,
+			});
 
-		if (!asfRes.ok) {
-			console.log("ASF IPC HTTP error:", asfRes.status, asfRes.statusText, body);
-			lastLength = lastLengthBeforeRun;
-			return;
-		}
+			let body;
+			try {
+				body = await asfRes.json();
+			} catch {
+				console.log("ASF IPC response was not JSON");
+				if (nextIndex === runStart) {
+					lastLength = lastLengthBeforeRun;
+				}
+				return;
+			}
 
-		if (body.Success) {
-			console.log(`Success: ${asfcommand}`);
+			if (!asfRes.ok) {
+				console.log(
+					"ASF IPC HTTP error:",
+					asfRes.status,
+					asfRes.statusText,
+					body,
+				);
+				if (nextIndex === runStart) {
+					lastLength = lastLengthBeforeRun;
+				}
+				return;
+			}
+
+			const resultRisky =
+				!body.Success || asfResultIndicatesClaimProblems(body.Result);
+			if (resultRisky) {
+				console.log(
+					nextIndex === runStart
+						? "ASF addlicense did not succeed cleanly; not advancing saved progress."
+						: "ASF addlicense failed on a later chunk; progress kept at last good batch.",
+				);
+				console.log(body);
+				if (nextIndex === runStart) {
+					lastLength = lastLengthBeforeRun;
+				}
+				return;
+			}
+
+			console.log(`Success: ${part}`);
 			console.debug(body);
-			lastLength = codes.length;
-			writeFileSync(lastlengthPath, String(lastLength));
-			writeFileSync(lastgamePath, lastLineClaimed, "utf8");
-			lastGameLine = lastLineClaimed.trimEnd();
-		} else {
-			console.log("ASF command failed:");
-			console.log(body);
-			lastLength = lastLengthBeforeRun;
+			nextIndex = end;
+			lastLength = nextIndex;
+			writeFileSync(lastlengthPath, String(nextIndex));
+			writeFileSync(lastgamePath, codes[nextIndex - 1], "utf8");
+			lastGameLine = codes[nextIndex - 1].trimEnd();
 		}
 	} catch (err) {
 		console.log("checkGame error:", err);
