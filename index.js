@@ -1,9 +1,9 @@
-import fetch from "node-fetch";
 import { readFile, writeFileSync } from "node:fs";
-import { Octokit } from "@octokit/rest";
 import * as dotenv from "dotenv";
-const octokit = new Octokit();
+
 dotenv.config();
+
+const gistId = "e8c5cf365d816f2640242bf01d8d3675";
 
 const asfport = process.env.ASF_PORT || "1242";
 const asfhost = process.env.ASF_HOST || "localhost";
@@ -30,10 +30,15 @@ checkGame();
 setInterval(checkGame, 6 * 60 * 60 * 1000); //Runs every six hours
 
 function checkGame() {
-	octokit.gists
-		.get({ gist_id: "e8c5cf365d816f2640242bf01d8d3675" })
+	fetch(`https://api.github.com/gists/${gistId}`, {
+		headers: {
+			Accept: "application/vnd.github+json",
+			"User-Agent": "asfclaim",
+		},
+	})
+		.then((res) => res.json())
 		.then((gist) => {
-			const codes = gist.data.files["Steam Codes"].content.split("\n");
+			const codes = gist.files["Steam Codes"].content.split("\n");
 
 			//THIS IS BAD, and definitely not scalable.
 			if (lastLength < codes.length) {
