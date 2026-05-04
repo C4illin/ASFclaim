@@ -19,13 +19,26 @@ Latest games claimed: https://gist.github.com/C4illin/77a4bcb9a9a7a95e5f291badc9
 ## Run
 1. Make sure ASF is running
 2. `node .`
-The program checks available licenses every 6 hours. 
+The program checks available licenses every 6 hours.
+
+Progress is stored under `ASFCLAIM_DATA_DIR` (default: current directory): `lastlength` (line index) and, after a successful claim run, `lastgame` (text of the last gist line that was processed). If `lastgame` matches a gist line, the next run continues after that line. If `lastgame` is missing or no longer in the gist but `lastlength` is greater than zero, that index is used. **With no usable saved progress** (`lastlength` is 0 and there is no matching `lastgame`), the app only considers the **latest** keys in the gist: it starts at `len − ASFCLAIM_TAIL_KEYS` (default **40**), so new installs do not try to claim the entire history at once. The same `ASFCLAIM_TAIL_KEYS` value caps each run when your saved cursor is more than that many lines behind the end of the gist.
+
+ASF IPC often returns `Success: true` while `Result` lists per-key statuses. The app **does not advance** saved progress when it sees bots **not connected**, **rate limits**, or other `Fail/*` lines except **`Fail/AlreadyPurchased`** (already owned — safe to advance). Claims are sent in chunks of **`ASFCLAIM_LICENSES_PER_COMMAND`** per `addlicense` (default **5**); each accepted chunk is persisted before the next chunk is sent.
 
 ### Docker
 
+Persist state on the host by setting `ASFCLAIM_DATA_DIR` to a mounted path (for example `/data` in the container).
+
 ```bash
-docker run --name asfclaim -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_HTTPS=false -e ASF_PASSWORD=hunter2 -e ASF_COMMAND_PREFIX=! -e ASF_BOTS=asf ghcr.io/c4illin/asfclaim:master 
+docker run --name asfclaim \
+  -e ASFCLAIM_DATA_DIR=/data \
+  -e ASFCLAIM_TAIL_KEYS=40 \
+  -e ASFCLAIM_LICENSES_PER_COMMAND=5 \
+  -v asfclaim-state:/data \
+  -e ASF_PORT=1242 -e ASF_HOST=localhost -e ASF_HTTPS=false -e ASF_PASSWORD=hunter2 -e ASF_COMMAND_PREFIX=! -e ASF_BOTS=asf \
+  ghcr.io/c4illin/asfclaim:master
 ```
+
 #### Docker-compose:
 ```yml
 # docker-compose.yml
@@ -37,14 +50,22 @@ services:
     restart: unless-stopped
     depends_on: asf # remove this if asf is not running in docker
     environment: # all are optional, defaults are listed below
+      - ASFCLAIM_DATA_DIR=/data
+      - ASFCLAIM_TAIL_KEYS=40
+      - ASFCLAIM_LICENSES_PER_COMMAND=5
       - ASF_PORT=1242
       - ASF_HOST=localhost
       - ASF_PASSWORD=
       - ASF_COMMAND_PREFIX=!
       - ASF_HTTPS=false
       - ASF_BOTS=asf # see https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Commands#bots-argument
+    volumes:
+      - asfclaim-state:/data
   asf:
     # ...
+
+volumes:
+  asfclaim-state:
 ```
 
 ## Contributors
